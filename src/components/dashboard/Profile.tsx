@@ -5,8 +5,6 @@ import { useSession } from '@/store';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { VerifiedIcon } from '../common';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
 export default function Profile() {
 	const { user } = useSession((state) => state);
@@ -30,18 +28,6 @@ export default function Profile() {
 				className="flex items-center gap-2 p-2 rounded-xl bg-white cursor-pointer relative"
 				onClick={() => router.push('/settings')}
 			>
-				{user && user[0]?.accountType === 'organization' && (
-					<Tooltip>
-						<TooltipTrigger asChild>
-							<span className="absolute -top-1 -right-1 bg-blue-400 text-white text-xs w-4 h-4 flex items-center justify-center rounded-full">
-								<VerifiedIcon className="h-6 w-6" />
-							</span>
-						</TooltipTrigger>
-						<TooltipContent side="top" className="">
-							<p>{user && user[0].organizationName}</p>
-						</TooltipContent>
-					</Tooltip>
-				)}
 				<Avatar>
 					<AvatarImage src={profileImage || ''} className="object-cover w-full h-full" />
 					<AvatarFallback>
