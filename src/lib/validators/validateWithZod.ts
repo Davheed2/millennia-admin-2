@@ -249,13 +249,6 @@ const updateProfileSchema: z.ZodType<UpdateProfileProps> = z
 				return (value.charAt(0).toUpperCase() + value.slice(1).toLowerCase()).trim();
 			})
 			.optional(),
-		username: z
-			.string()
-			.min(0, { message: 'username is required' })
-			.max(50, { message: 'username must be less than 50 characters' })
-			.trim()
-			.toLowerCase()
-			.optional(),
 		email: z
 			.string()
 			// .email({ message: 'Invalid email address' })
@@ -267,36 +260,6 @@ const updateProfileSchema: z.ZodType<UpdateProfileProps> = z
 			})
 			.optional()
 			.nullable(),
-		bio: z
-			.string()
-			.min(7, { message: 'Bio must be at least 7 characters long' })
-			.max(250, { message: 'Bio must be less than 250 characters' })
-			.transform((value) => {
-				return value.trim();
-				// return (value.charAt(0).toUpperCase() + value.slice(1).toLowerCase()).trim();
-			})
-			.nullish()
-			.or(z.literal('')),
-		careerGoals: z
-			.string()
-			.min(7, { message: 'Career Goals must be at least 7 characters long' })
-			.max(250, { message: 'Career Goals must be less than 250 characters' })
-			.transform((value) => {
-				return value.trim();
-				// return (value.charAt(0).toUpperCase() + value.slice(1).toLowerCase()).trim();
-			})
-			.nullish()
-			.or(z.literal('')),
-		opportunities: z
-			.string()
-			.min(7, { message: 'Opportunities must be at least 7 characters long' })
-			.max(250, { message: 'Opportunities must be less than 250 characters' })
-			.transform((value) => {
-				return value.trim();
-				// return (value.charAt(0).toUpperCase() + value.slice(1).toLowerCase()).trim();
-			})
-			.nullish()
-			.or(z.literal('')),
 		photo: z
 			.any() // Allow File or FileList
 			.optional()

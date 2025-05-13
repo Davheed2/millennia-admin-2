@@ -8,25 +8,20 @@ import {
 	DashboardIcon,
 	UsersIcon,
 	LogoutIcon,
-	ThunderIcon,
-	RolePlayIcon,
-	BookIcon,
 	SettingsIcon,
 	XIcon,
-	//QuizIcon,
-	ModuleIcon,
+	GroupIcon,
+	DepositIcon,
+	WithdrawalIcon,
 } from '../common';
 import Image from 'next/image';
 
 const menuItems = [
 	{ name: 'Dashboard', icon: DashboardIcon, path: '/dashboard' },
-	{ name: 'Users', icon: UsersIcon, path: '/users' },
-	{ name: 'Power Skills', icon: ThunderIcon, path: '/power-skills' },
-	{ name: 'Role Play', icon: RolePlayIcon, path: '/role-play' },
-	{ name: 'Modules', icon: ModuleIcon, path: '/modules' },
-	{ name: 'Courses', icon: BookIcon, path: '/courses' },
-	// { name: 'Quiz', icon: QuizIcon, path: '/quiz' },
-	{ name: 'Teams', icon: UsersIcon, path: '/team' },
+	{ name: 'Users', icon: GroupIcon, path: '/users' },
+	{ name: 'Kyc', icon: UsersIcon, path: '/kyc' },
+	{ name: 'deposits', icon: DepositIcon, path: '/deposits' },
+	{ name: 'withdrawals', icon: WithdrawalIcon, path: '/withdrawals' },
 	{ name: 'Settings', icon: SettingsIcon, path: '/settings' },
 ];
 
@@ -37,8 +32,18 @@ export default function Sidebar() {
 	return (
 		<>
 			<aside className="w-[220px] bg-white text-[#000000] flex-col p-4 space-y-6 h-screen py-5 overflow-y-auto hidden md:flex scrollbar-hide">
-				<div className="flex items-center mb-11 mdd:mb-8 mt-7">
-					<Image src="/icons/100minds.svg" alt="Logo" className="w-32 h-17" width={100} height={100} />
+				{/* <div className="flex items-center mb-11 mdd:mb-8 mt-7 mx-auto">
+					<Image src="/millennnia.png" alt="Logo" className="w-17 h-17" width={100} height={100} />
+				</div> */}
+				<div className="flex items-center gap-2 mb-11 mdd:mb-8 mt-7">
+					<Image
+						src="/millennnia.png"
+						alt="Millennia Trades Logo"
+						width={32}
+						height={32}
+						className="rounded-full object-cover"
+					/>
+					<span className="text-lg font-bold">Millennia Trades</span>
 				</div>
 
 				<nav className="flex flex-col gap-4 flex-grow">
@@ -46,7 +51,7 @@ export default function Sidebar() {
 						<Link key={item.name} href={item.path}>
 							<div className="relative flex items-center">
 								{pathname === item.path && (
-									<div className="absolute left-[-10px] w-1 h-[70%] bg-[#509999] rounded-r-lg" />
+									<div className="absolute left-[-10px] w-1 h-[70%] bg-[#1d4ed8] rounded-r-lg" />
 								)}
 
 								<span
@@ -56,7 +61,7 @@ export default function Sidebar() {
 									)}
 								>
 									<div className="flex items-center gap-3 text-[14px]">
-										{item.icon && <item.icon className="text-[#509999] w-5 h-5" />}
+										{item.icon && <item.icon className="w-5 h-5" />}
 										{item.name}
 									</div>
 
@@ -109,8 +114,19 @@ export function MobileSidebar({
 				)}
 			>
 				<div className="flex items-center justify-between mb-8">
-					<div className="flex items-center mt-7 ml-3">
-						<Image src="/icons/100minds-logo.png" alt="Logo" className="w-28 h-17" width={100} height={100} />
+					{/* <div className="flex items-center mt-7 ml-3">
+						<Image src="/millennnia.png" alt="Logo" className="w-28 h-17" width={100} height={100} />
+						Millennia Trades
+					</div> */}
+					<div className="flex items-center gap-2 mt-7 ml-3">
+						<Image
+							src="/millennnia.png"
+							alt="Millennia Trades Logo"
+							width={32}
+							height={32}
+							className="rounded-full object-cover"
+						/>
+						<span className="text-lg font-bold">Millennia Trades</span>
 					</div>
 					<button
 						className="cursor-pointer bg-[#F3F3F3] rounded-xl p-2 md:hidden mt-5"
@@ -125,7 +141,7 @@ export function MobileSidebar({
 						<Link key={item.name} href={item.path} onClick={() => setIsOpen(false)}>
 							<div className="relative flex items-center">
 								{pathname === item.path && (
-									<div className="absolute left-[5px] w-1 h-[70%] bg-[#509999] rounded-r-lg" />
+									<div className="absolute left-[5px] w-1 h-[70%] bg-[#1d4ed8] rounded-r-lg" />
 								)}
 								<span
 									className={cn(

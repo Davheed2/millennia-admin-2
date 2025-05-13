@@ -5,9 +5,9 @@ import { Metadata } from 'next';
 
 export const generateMetadata = (): Metadata => {
 	return generatePageMetadata({
-		title: 'Users - 100 Minds',
-		content: 'View and manage user accounts in 100 Minds Dashboard',
-		url: 'https://admin-mmyv.onrender.com/users',
+		title: 'Users - Millennia Trades',
+		content: 'View and manage user accounts in Millennia Trades Dashboard',
+		url: 'https://admin.millenniatrades.com/users',
 	});
 };
 

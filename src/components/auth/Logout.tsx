@@ -50,7 +50,7 @@ export default function LogoutPage() {
 				<p className="text-gray-600 mb-4">Processing your logout request...</p>
 				<Button
 					disabled
-					className="w-full bg-[#509999] hover:cursor-pointer text-white font-semibold py-2 rounded cursor-not-allowed"
+					className="w-full bg-[#1d4ed8] hover:cursor-pointer text-white font-semibold py-2 rounded cursor-not-allowed"
 				>
 					Logging Out...
 				</Button>

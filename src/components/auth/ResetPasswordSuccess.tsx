@@ -18,7 +18,7 @@ const ResetPasswordSuccessPage = () => {
 				}}
 				description="Password Reset Successful"
 			>
-				<Button className="w-full bg-[#509999] hover:bg-[#6fb7b7] hover:cursor-pointer text-white font-semibold py-5 rounded">
+				<Button className="w-full bg-[#1d4ed8] hover:bg-[#1e40af] hover:cursor-pointer text-white font-semibold py-5 rounded">
 					<Link href="/">Sign in to continue</Link>
 				</Button>
 			</Success>

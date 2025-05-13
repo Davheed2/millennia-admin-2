@@ -8,7 +8,7 @@ interface MetaDataProps {
 }
 
 export function generatePageMetadata({ title, content, image, url }: MetaDataProps): Metadata {
-	const defaultImage = '/100minds.jpg';
+	const defaultImage = '/millennnia.png';
 
 	return {
 		title: `${title}`,
@@ -19,18 +19,18 @@ export function generatePageMetadata({ title, content, image, url }: MetaDataPro
 			locale: 'en_US',
 			title: `${title}`,
 			description: content,
-			url: url || 'https://admin-mmyv.onrender.com',
-			images: ['opengraph-image.jpg'],
+			url: url || 'https://admin.millenniatrades.com',
+			images: ['opengraph-image.png'],
 		},
 		twitter: {
 			card: image || defaultImage ? 'summary_large_image' : 'summary',
 			title: `${title}`,
 			description: content,
-			images: ['100minds.jpg'],
+			images: ['millennnia.png'],
 		},
 		other: {
 			'og:locale': 'en_US',
 		},
-		metadataBase: new URL('https://admin-mmyv.onrender.com'),
+		metadataBase: new URL('https://admin.millenniatrades.com'),
 	};
 }

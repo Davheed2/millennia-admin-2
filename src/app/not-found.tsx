@@ -25,7 +25,7 @@ const NotFound = () => {
 						<Button
 							size="lg"
 							variant="default"
-							className="font-semibold md:text-lg rounded-md px-6 py-4 border bg-[#509999] hover:bg-[#6fb7b7] text-white cursor-pointer"
+							className="font-semibold md:text-lg rounded-md px-6 py-4 border bg-[#1d4ed8] hover:bg-[#1e40af] text-white cursor-pointer"
 							onClick={() => router.back()}
 						>
 							<div className="flex space-x-2 items-center">
@@ -36,7 +36,7 @@ const NotFound = () => {
 						<Button
 							size="lg"
 							variant="default"
-							className="font-semibold md:text-lg rounded-md px-6 py-4 bg-[#509999] hover:bg-[#6fb7b7] text-white cursor-pointer"
+							className="font-semibold md:text-lg rounded-md px-6 py-4 bg-[#1d4ed8] hover:bg-[#1e40af] text-white cursor-pointer"
 							onClick={() => router.push('/dashboard')}
 						>
 							Go home

@@ -28,4 +28,8 @@ export {
 	VerifiedIcon,
 	ModuleIcon,
 	ResourseIcon,
+	UserIcon,
+	GroupIcon,
+	DepositIcon,
+	WithdrawalIcon,
 } from './svg';

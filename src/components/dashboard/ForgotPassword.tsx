@@ -60,13 +60,13 @@ const ForgotPasswordPage = () => {
 					<div className="flex justify-between items-center ">
 						<p className="text-xs text-gray-500">
 							Didn’t receive the email?{' '}
-							<Link href="/settings" className="text-[#509999] hover:underline" onClick={() => setSent(false)}>
+							<Link href="/settings" className="text-[#1d4ed8] hover:underline" onClick={() => setSent(false)}>
 								Try again
 							</Link>
 						</p>
 						<Link
 							href="/settings"
-							className="text-xs font-semibold text-[#509999] hover:underline"
+							className="text-xs font-semibold text-[#1d4ed8] hover:underline"
 							onClick={() => setSent(false)}
 						>
 							Back
@@ -105,7 +105,7 @@ const ForgotPasswordPage = () => {
 							<div className="flex flex-col gap-4 text-center">
 								<Button
 									disabled={isSubmitting}
-									className="w-full bg-[#509999] hover:bg-[#6fb7b7] hover:cursor-pointer text-white font-semibold py-5 rounded"
+									className="w-full bg-[#1d4ed8] hover:bg-[#1e40af] hover:cursor-pointer text-white font-semibold py-5 rounded"
 									variant="default"
 								>
 									Submit

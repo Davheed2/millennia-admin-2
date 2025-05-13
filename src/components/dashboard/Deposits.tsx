@@ -1,31 +1,6 @@
 'use client';
 
-import { ApiResponse } from '@/interfaces';
-import { Module, ModuleData } from '@/interfaces/ApiResponses';
-import { callApi } from '@/lib';
-//import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect, useState, useRef } from 'react';
-//import { SubmitHandler, useForm } from 'react-hook-form';
-import { toast } from 'sonner';
-import { Button } from '../ui/button';
-//import { FormErrorMessage } from '../common';
-import { Input } from '../ui/input';
-import { Checkbox } from '../ui/checkbox';
-import { format } from 'date-fns';
-import debounce from 'lodash/debounce';
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from 'lucide-react';
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import {
-	DropdownMenu,
-	DropdownMenuCheckboxItem,
-	DropdownMenuContent,
-	DropdownMenuItem,
-	DropdownMenuLabel,
-	DropdownMenuSeparator,
-	DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+import * as React from 'react';
 import {
 	ColumnDef,
 	ColumnFiltersState,
@@ -38,6 +13,20 @@ import {
 	getSortedRowModel,
 	useReactTable,
 } from '@tanstack/react-table';
+import { ArrowUpDown, ChevronDown, MoreHorizontal } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import debounce from 'lodash/debounce';
+import {
+	DropdownMenu,
+	DropdownMenuCheckboxItem,
+	DropdownMenuContent,
+	DropdownMenuItem,
+	DropdownMenuLabel,
+	DropdownMenuSeparator,
+	DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import {
 	Pagination,
 	PaginationContent,
@@ -46,151 +35,75 @@ import {
 	PaginationNext,
 	PaginationPrevious,
 } from '@/components/ui/pagination';
-import React from 'react';
-import { EditIcon, CopyIcon, DeleteIcon, SaveIcon, XIcon } from '../common';
+import { Input } from '@/components/ui/input';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import { ApiResponse, Transaction } from '@/interfaces';
+import { callApi } from '@/lib';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { format } from 'date-fns';
+import { useEffect } from 'react';
+import { toast } from 'sonner';
 
-export default function Modulee() {
-	//const [isLoading, setIsLoading] = useState(false);
+export function DepositTable() {
 	const [sorting, setSorting] = React.useState<SortingState>([]);
 	const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
 	const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
 	const [rowSelection, setRowSelection] = React.useState({});
 	const [error, setError] = React.useState<string | null>(null);
-	const [editingRowId, setEditingRowId] = useState<string | null>(null);
-	const [editedData, setEditedData] = useState<Partial<Module>>({});
-	const skipPageResetRef = useRef(false);
-	const inputRefs = useRef<{ [key: string]: HTMLInputElement | null }>({});
 	const queryClient = useQueryClient();
 
-	// const {
-	// 	register,
-	// 	handleSubmit,
-	// 	reset,
-	// 	formState: { errors, isSubmitting },
-	// } = useForm<AddModuleType>({
-	// 	resolver: zodResolver(zodValidator('module')!),
-	// 	mode: 'onChange',
-	// 	reValidateMode: 'onChange',
-	// });
-
 	const {
-		data: modules,
+		data: transaction,
 		isLoading: loading,
 		error: queryError,
-	} = useQuery<Module[], Error>({
-		queryKey: ['module'],
+	} = useQuery<Transaction[], Error>({
+		queryKey: ['deposits'],
 		queryFn: async () => {
-			const { data: responseData, error } = await callApi<ApiResponse<Module[]>>('/course/get-modules');
+			const { data: responseData, error } = await callApi<ApiResponse<Transaction[]>>('/transaction/deposits');
 			if (error) {
-				throw new Error(error.message || 'Something went wrong while fetching course modules.');
+				throw new Error(error.message || 'Something went wrong while fetching deposits.');
 			}
 			if (!responseData?.data) {
-				throw new Error('No module data returned');
+				throw new Error('No deposit data returned');
 			}
-			toast.success('Modules Fetched', { description: 'Successfully fetched course modules.' });
+			toast.success('Users deposits Fetched', { description: 'Successfully fetched users deposits.' });
 			return responseData.data;
 		},
 	});
 
 	useEffect(() => {
 		if (queryError) {
-			const errorMessage = queryError.message || 'An unexpected error occurred while fetching modules.';
+			const errorMessage = queryError.message || 'An unexpected error occurred while fetching users deposits.';
 			setError(errorMessage);
-			toast.error('Failed to Fetch Course Modules', {
-				description: errorMessage,
-			});
+			toast.error('Failed to Fetch Users deposits', { description: errorMessage });
 		}
 	}, [queryError]);
 
-	// const onSubmit: SubmitHandler<AddModuleType> = async (data: AddModuleType) => {
-	// 	try {
-	// 		setIsLoading(true);
-	// 		const { data: responseData, error } = await callApi<ApiResponse<ModuleData>>('/course/create-module', {
-	// 			name: data.name,
-	// 		});
-
-	// 		if (error) {
-	// 			throw new Error(error.message);
-	// 		}
-
-	// 		if (responseData?.status === 'success') {
-	// 			toast.success('Course Module Created', { description: 'The module has been added successfully.' });
-	// 			queryClient.invalidateQueries({ queryKey: ['module'] });
-	// 		}
-	// 	} catch (err) {
-	// 		toast.error('Module Creation Failed', {
-	// 			description: err instanceof Error ? err.message : 'An unexpected error occurred. Please try again.',
-	// 		});
-	// 	} finally {
-	// 		setIsLoading(false);
-	// 		reset();
-	// 	}
-	// };
-
-	const onDeleteModule = async (moduleId: string) => {
+	const onUpdateTransaction = async (transactionId: string, userId: string, status: string) => {
 		try {
-			const { data: responseData, error } = await callApi<ApiResponse<null>>(`/course/delete-module`, {
-				moduleId,
+			const { data: responseData, error } = await callApi<ApiResponse<null>>(`/transaction/update/deposit`, {
+				userId,
+				status,
+				transactionId,
 			});
 
 			if (error) throw new Error(error.message);
 			if (responseData?.status === 'success') {
-				toast.success('Module Deleted', { description: 'The course module has been successfully removed.' });
+				toast.success(`Transaction Updated`, {
+					description: responseData.message || `The users transaction has been updated successfully.`,
+				});
 				return true;
 			}
 			return false;
 		} catch (err) {
-			toast.error('Module Deletion Failed', {
+			toast.error('KYC update Failed', {
 				description: err instanceof Error ? err.message : 'An unexpected error occurred.',
 			});
 			return false;
 		}
 	};
 
-	const onEditModule = async (moduleId: string, updatedData: Partial<Module>) => {
-		try {
-			const dataToSend = {
-				name: updatedData.name,
-			};
-
-			Object.keys(dataToSend).forEach((key) => {
-				if (dataToSend[key as keyof typeof dataToSend] === undefined) {
-					delete (dataToSend as Record<string, unknown>)[key];
-				}
-			});
-
-			if (Object.keys(dataToSend).length === 0) {
-				toast.warning('No changes to update', { description: 'No fields were modified.' });
-				return false;
-			}
-
-			const { data: responseData, error } = await callApi<ApiResponse<ModuleData>>(`/course/update-module`, {
-				moduleId,
-				...dataToSend,
-			});
-
-			if (error) throw new Error(error.message);
-			if (responseData?.status === 'success') {
-				toast.success('Module Updated', { description: 'Module has been successfully updated.' });
-				queryClient.invalidateQueries({ queryKey: ['module'] });
-				return true;
-			}
-			return false;
-		} catch (err) {
-			toast.error('Module Update Failed', {
-				description: err instanceof Error ? err.message : 'An unexpected error occurred.',
-			});
-			return false;
-		}
-	};
-
-	useEffect(() => {
-		if (editingRowId && inputRefs.current[editingRowId]) {
-			inputRefs.current[editingRowId]?.focus();
-		}
-	}, [editingRowId]);
-
-	const columns: ColumnDef<Module>[] = [
+	const columns: ColumnDef<Transaction>[] = [
 		{
 			id: 'select',
 			header: ({ table }) => (
@@ -215,45 +128,78 @@ export default function Modulee() {
 			header: ({ column }) => {
 				return (
 					<Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-						Module
+						Name
 						<ArrowUpDown />
 					</Button>
 				);
 			},
 			cell: ({ row }) => {
-				const name = row.original.name;
-				const isEditing = editingRowId === row.original.id;
-
-				if (isEditing) {
-					return (
-						<Input
-							ref={(el) => {
-								inputRefs.current[row.original.id] = el;
-							}}
-							value={editedData.name || name}
-							onChange={(e) => setEditedData({ ...editedData, name: e.target.value })}
-							className="min-h-[45px] border-gray-300 focus:border-blue-500 focus:ring-blue-500 text-sm"
-							autoFocus
-						/>
-					);
-				}
+				const firstName = row.original.firstName;
+				const lastName = row.original.lastName;
 
 				return (
 					<div className="flex items-center space-x-2">
 						<Avatar>
-							<AvatarImage src="/icons/Course.svg" />
-							<AvatarFallback>M</AvatarFallback>
+							<AvatarImage src={'/icons/Frame 7.svg'} className="object-cover w-full h-full" />
+							<AvatarFallback>US</AvatarFallback>
 						</Avatar>
-						<span className="lowercase ml-3">{`${name}`}</span>
+						<span className="lowercase ml-3">{`${firstName} ${lastName}`}</span>
 					</div>
 				);
 			},
-			accessorFn: (row) => `${row.name}`,
+			accessorFn: (row) => `${row.firstName} ${row.lastName}`,
 		},
 		{
-			accessorKey: 'id',
-			header: 'Id',
-			cell: ({ row }) => <div className="lowercase">{row.getValue('id')}</div>,
+			accessorKey: 'description',
+			header: 'Description',
+			cell: ({ row }) => <div className="lowercase">{row.getValue('description')}</div>,
+		},
+		{
+			accessorKey: 'amount',
+			header: 'Amount',
+			cell: ({ row }) => <div className="lowercase">{row.getValue('amount')}</div>,
+		},
+		{
+			id: 'paymentProof',
+			header: ({}) => {
+				return (
+					<Button variant="ghost">
+						Payment Proof
+						<ArrowUpDown />
+					</Button>
+				);
+			},
+			cell: ({ row }) => {
+				const paymentProof = row.original.paymentProof;
+
+				if (paymentProof === null) {
+					return <div className="flex items-center justify-center">-</div>;
+				}
+
+				return (
+					<div className="flex items-center space-x-2">
+						<a href={paymentProof} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">
+							<span className="lowercase ml-3">{`${paymentProof}`}</span>
+						</a>
+					</div>
+				);
+			},
+			accessorFn: (row) => `${row.paymentProof}`,
+		},
+		{
+			accessorKey: 'crypto',
+			header: 'Crypto',
+			cell: ({ row }) => <div className="lowercase">{row.getValue('crypto')}</div>,
+		},
+		{
+			accessorKey: 'address',
+			header: 'Address',
+			cell: ({ row }) => <div className="lowercase">{row.getValue('address')}</div>,
+		},
+		{
+			accessorKey: 'status',
+			header: 'Status',
+			cell: ({ row }) => <div className="lowercase">{row.getValue('status')}</div>,
 		},
 		{
 			accessorKey: 'created_at',
@@ -273,8 +219,7 @@ export default function Modulee() {
 			id: 'actions',
 			enableHiding: false,
 			cell: ({ row }) => {
-				const modules = row.original;
-				const isEditing = editingRowId === modules.id;
+				const transaction = row.original;
 
 				return (
 					<DropdownMenu>
@@ -286,65 +231,41 @@ export default function Modulee() {
 						</DropdownMenuTrigger>
 						<DropdownMenuContent align="end">
 							<DropdownMenuLabel>Actions</DropdownMenuLabel>
-
-							{!isEditing ? (
+							<DropdownMenuItem
+								onClick={() => navigator.clipboard.writeText(transaction.id)}
+								className="hover:cursor-pointer"
+							>
+								Copy transaction ID
+							</DropdownMenuItem>
+							<DropdownMenuSeparator />
+							{/* <DropdownMenuItem
+								className="hover:cursor-pointer"
+								onClick={async () => {
+									const success = await onPromoteUser(row.original.id, row.original.role !== 'admin');
+									if (success) await queryClient.invalidateQueries({ queryKey: ['users'] });
+								}}
+							>
+								{row.original.role === 'user' ? 'Promote User' : 'Demote User'}
+							</DropdownMenuItem> */}
+							{transaction.status !== 'completed' && (
 								<>
 									<DropdownMenuItem
-										onClick={() => navigator.clipboard.writeText(modules.id)}
 										className="hover:cursor-pointer"
-									>
-										<CopyIcon className=" h-4 w-4" />
-										Copy Module ID
-									</DropdownMenuItem>
-									<DropdownMenuItem
-										onClick={() => {
-											setEditingRowId(modules.id);
-											setEditedData(modules);
-											skipPageResetRef.current = true;
-										}}
-										className="hover:cursor-pointer"
-									>
-										<EditIcon className=" h-4 w-4" />
-										Edit
-									</DropdownMenuItem>
-
-									<DropdownMenuSeparator />
-									<DropdownMenuItem
-										className="hover:cursor-pointer text-red-500"
 										onClick={async () => {
-											const success = await onDeleteModule(row.original.id);
-											if (success) await queryClient.invalidateQueries({ queryKey: ['module'] });
+											const success = await onUpdateTransaction(transaction.id, transaction.userId, 'completed');
+											if (success) await queryClient.invalidateQueries({ queryKey: ['deposits'] });
 										}}
 									>
-										<DeleteIcon className=" h-4 w-4" />
-										Delete
+										Approve
 									</DropdownMenuItem>
-								</>
-							) : (
-								<>
 									<DropdownMenuItem
-										onClick={async () => {
-											const success = await onEditModule(modules.id, editedData);
-											if (success) {
-												setEditedData({});
-												setEditingRowId(null);
-												skipPageResetRef.current = true;
-											}
-										}}
 										className="hover:cursor-pointer"
-									>
-										<SaveIcon className=" h-4 w-4" />
-										Save
-									</DropdownMenuItem>
-									<DropdownMenuItem
-										onClick={() => {
-											setEditingRowId(null);
-											setEditedData({});
+										onClick={async () => {
+											const success = await onUpdateTransaction(transaction.id, transaction.userId, 'failed');
+											if (success) await queryClient.invalidateQueries({ queryKey: ['deposits'] });
 										}}
-										className="hover:cursor-pointer text-red-500"
 									>
-										<XIcon className=" h-4 w-4" />
-										Cancel
+										Reject
 									</DropdownMenuItem>
 								</>
 							)}
@@ -356,7 +277,7 @@ export default function Modulee() {
 	];
 
 	const table = useReactTable({
-		data: modules ?? [],
+		data: transaction ?? [],
 		columns,
 		onSortingChange: setSorting,
 		onColumnFiltersChange: setColumnFilters,
@@ -372,8 +293,6 @@ export default function Modulee() {
 			columnVisibility,
 			rowSelection,
 		},
-		autoResetPageIndex: !skipPageResetRef.current,
-		autoResetExpanded: !skipPageResetRef.current,
 	});
 
 	const debouncedFilter = React.useCallback(
@@ -386,51 +305,9 @@ export default function Modulee() {
 		[table]
 	);
 
-	if (error) {
-		return (
-			<div className="w-full bg-white rounded-md px-6 py-4 text-center text-red-500">
-				<p>Error: {error}</p>
-			</div>
-		);
-	}
-
 	return (
 		<>
 			<div className="flex flex-col w-full">
-				{/* <div className="w-full max-w-md space-y-6 px-6 mb-20 mx-auto">
-					<div className="flex flex-col items-center space-y-2">
-						<h2 className="text-center text-xl font-semibold text-gray-900">Create Course Module </h2>
-					</div>
-					<form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
-						<div>
-							<label htmlFor="module" className="text-sm font-medium text-gray-700">
-								Module Name <span className="text-red-500">*</span>
-							</label>
-							<Input
-								{...register('name')}
-								autoFocus
-								type="text"
-								id="name"
-								aria-label="Module Name"
-								placeholder="Module Name"
-								className={`min-h-[45px] border-gray-300 focus:border-blue-500 focus:ring-blue-500 placeholder:text-sm ${
-									errors.name && 'border-red-500 ring-2 ring-red-500'
-								}`}
-							/>
-							{errors.name && <FormErrorMessage error={errors.name} errorMsg={errors.name.message} />}
-						</div>
-
-						<Button
-							type="submit"
-							disabled={isSubmitting || isLoading}
-							variant="default"
-							className="w-full bg-[#509999] hover:bg-[#6fb7b7] hover:cursor-pointer text-white font-semibold py-5 rounded"
-						>
-							{isSubmitting || isLoading ? 'Creating...' : 'Create'}
-						</Button>
-					</form>
-				</div> */}
-
 				{loading ? (
 					<div className="w-full bg-white rounded-md px-6 py-6">
 						<div className="flex items-center py-4">
@@ -474,11 +351,17 @@ export default function Modulee() {
 							</Table>
 						</div>
 					</div>
+				) : error ? (
+					<div className="w-full bg-white rounded-md px-6 py-4 text-center text-red-500">
+						<p>Error: {error}</p>
+					</div>
 				) : (
 					<div className="w-full bg-white rounded-md px-6">
 						<div className="flex items-center py-4">
 							<Input
-								placeholder="Filter course modules..."
+								placeholder="Filter names..."
+								// value={(table.getColumn('email')?.getFilterValue() as string) ?? ''}
+								// onChange={(event) => table.getColumn('email')?.setFilterValue(event.target.value)}
 								defaultValue={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
 								onChange={(event) => debouncedFilter(event.target.value)}
 								className="max-w-sm"

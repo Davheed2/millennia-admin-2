@@ -128,32 +128,32 @@ export default function DashboardStats() {
 		{
 			title: 'Total Users',
 			value: stats ? stats[0].totalUsers : 0,
-			icon: <Users className="h-5 w-5 text-[#509999]" />,
+			icon: <Users className="h-5 w-5 text-[#1d4ed8]" />,
 		},
 		{
 			title: 'Total Role Play',
 			value: stats ? stats[0].totalRolePlay : 0,
-			icon: <Drama className="h-5 w-5 text-[#509999]" />,
+			icon: <Drama className="h-5 w-5 text-[#1d4ed8]" />,
 		},
 		{
 			title: 'Total Teams',
 			value: stats ? stats[0].totalTeams : 0,
-			icon: <Users className="h-5 w-5 text-[#509999]" />,
+			icon: <Users className="h-5 w-5 text-[#1d4ed8]" />,
 		},
 		{
 			title: 'Total Power Skill',
 			value: stats ? stats[0].totalPowerSkill : 0,
-			icon: <Zap className="h-5 w-5 text-[#509999]" />,
+			icon: <Zap className="h-5 w-5 text-[#1d4ed8]" />,
 		},
 		{
 			title: 'Total Learning Journey',
 			value: stats ? stats[0].totalLearningJourney : 0,
-			icon: <BookOpen className="h-5 w-5 text-[#509999]" />,
+			icon: <BookOpen className="h-5 w-5 text-[#1d4ed8]" />,
 		},
 		{
 			title: 'Total Courses',
 			value: stats ? stats[0].totalCourses : 0,
-			icon: <Book className="h-5 w-5 text-[#509999]" />,
+			icon: <Book className="h-5 w-5 text-[#1d4ed8]" />,
 		},
 	];
 
@@ -162,7 +162,7 @@ export default function DashboardStats() {
 			{statItems.map((stat, index) => {
 				const isSelected = selectedCardIndex === index;
 				const iconWithColor = React.cloneElement(stat.icon, {
-					style: { color: isSelected ? 'white' : '#509999' },
+					style: { color: isSelected ? 'white' : '#1d4ed8' },
 				});
 
 				return (

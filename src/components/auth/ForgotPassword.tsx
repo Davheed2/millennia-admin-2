@@ -73,7 +73,7 @@ const ForgotPasswordPage = () => {
 				<div className="flex flex-col gap-4 text-center">
 					<Button
 						disabled={isSubmitting}
-						className="w-full bg-[#509999] hover:bg-[#6fb7b7] hover:cursor-pointer text-white font-semibold py-5 rounded"
+						className="w-full bg-[#1d4ed8] hover:bg-[#1e40af] hover:cursor-pointer text-white font-semibold py-5 rounded"
 						variant="default"
 					>
 						Submit
@@ -82,7 +82,7 @@ const ForgotPasswordPage = () => {
 
 				<div className="flex justify-between items-center">
 					<div></div>
-					<Link href="/" className="text-xs font-semibold text-[#509999] hover:underline">
+					<Link href="/" className="text-xs font-semibold text-[#1d4ed8] hover:underline">
 						Back to sign in page
 					</Link>
 				</div>

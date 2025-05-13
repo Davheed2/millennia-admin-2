@@ -26,7 +26,7 @@ export default function GlobalError({ error, reset }: { error: Error; reset: () 
 							<div className="my-12 flex flex-col gap-4 md:flex-row">
 								<Button
 									size="lg"
-									className="cursor-pointer rounded-md border bg-[#509999] px-6 py-4 font-semibold text-white hover:bg-[#6fb7b7] md:text-lg"
+									className="cursor-pointer rounded-md border bg-[#1d4ed8] hover:bg-[#1e40af] px-6 py-4 font-semibold text-white md:text-lg"
 									onClick={() => router.back()}
 								>
 									<div className="flex items-center space-x-2">
@@ -36,14 +36,14 @@ export default function GlobalError({ error, reset }: { error: Error; reset: () 
 								</Button>
 								<Button
 									size="lg"
-									className="cursor-pointer rounded-md bg-[#509999] px-6 py-4 font-semibold text-white hover:bg-[#6fb7b7] md:text-lg"
+									className="cursor-pointer rounded-md bg-[#1d4ed8] hover:bg-[#1e40af] px-6 py-4 font-semibold text-white md:text-lg"
 									onClick={() => router.push('/dashboard')}
 								>
 									Go home
 								</Button>
 								<Button
 									size="lg"
-									className="cursor-pointer rounded-md bg-[#509999] px-6 py-4 font-semibold text-white hover:bg-[#6fb7b7] md:text-lg"
+									className="cursor-pointer rounded-md bg-[#1d4ed8] hover:bg-[#1e40af] px-6 py-4 font-semibold text-white md:text-lg"
 									onClick={reset}
 								>
 									Try again

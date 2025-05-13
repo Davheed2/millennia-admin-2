@@ -29,11 +29,11 @@ export default function ForgotPasswordSent() {
 				<div className="flex justify-between items-center ">
 					<p className="text-xs text-gray-500">
 						Didn’t receive the email?{' '}
-						<Link href="/forgot-password" className="text-[#509999] hover:underline">
+						<Link href="/forgot-password" className="text-[#1d4ed8] hover:underline">
 							Try again
 						</Link>
 					</p>
-					<Link href="/" className="text-xs font-semibold text-[#509999] hover:underline">
+					<Link href="/" className="text-xs font-semibold text-[#1d4ed8] hover:underline">
 						Back to sign in
 					</Link>
 				</div>

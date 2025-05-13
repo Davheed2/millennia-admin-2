@@ -17,7 +17,6 @@ import { ArrowUpDown, ChevronDown, MoreHorizontal } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
-import Image from 'next/image';
 import debounce from 'lodash/debounce';
 import {
 	DropdownMenu,
@@ -38,14 +37,14 @@ import {
 } from '@/components/ui/pagination';
 import { Input } from '@/components/ui/input';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { ApiResponse, User } from '@/interfaces';
+import { ApiResponse, Kyc } from '@/interfaces';
 import { callApi } from '@/lib';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import { useEffect } from 'react';
 import { toast } from 'sonner';
 
-export function DataTable() {
+export function KycTable() {
 	const [sorting, setSorting] = React.useState<SortingState>([]);
 	const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
 	const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
@@ -54,82 +53,56 @@ export function DataTable() {
 	const queryClient = useQueryClient();
 
 	const {
-		data: users,
+		data: kyc,
 		isLoading: loading,
 		error: queryError,
-	} = useQuery<User[], Error>({
-		queryKey: ['users'],
+	} = useQuery<Kyc[], Error>({
+		queryKey: ['kyc'],
 		queryFn: async () => {
-			const { data: responseData, error } = await callApi<ApiResponse<User[]>>('/user/all');
+			const { data: responseData, error } = await callApi<ApiResponse<Kyc[]>>('/kyc/all');
 			if (error) {
-				throw new Error(error.message || 'Something went wrong while fetching users.');
+				throw new Error(error.message || 'Something went wrong while fetching users Kyc.');
 			}
 			if (!responseData?.data) {
 				throw new Error('No user data returned');
 			}
-			toast.success('Users Fetched', { description: 'Successfully fetched users.' });
+			toast.success('Users Kyc Fetched', { description: 'Successfully fetched users KYC.' });
 			return responseData.data;
 		},
 	});
 
 	useEffect(() => {
 		if (queryError) {
-			const errorMessage = queryError.message || 'An unexpected error occurred while fetching users.';
+			const errorMessage = queryError.message || 'An unexpected error occurred while fetching users kyc.';
 			setError(errorMessage);
-			toast.error('Failed to Fetch Users', { description: errorMessage });
+			toast.error('Failed to Fetch Users KYC', { description: errorMessage });
 		}
 	}, [queryError]);
 
-	const onSuspendUser = async (userId: string, suspend: boolean) => {
+	const onUpdateUser = async (userId: string, status: string) => {
 		try {
-			const { data: responseData, error } = await callApi<ApiResponse<null>>(`/user/suspend-user`, {
+			const { data: responseData, error } = await callApi<ApiResponse<null>>(`/kyc/update`, {
 				userId,
-				suspend,
+				status,
 			});
 
 			if (error) throw new Error(error.message);
 			if (responseData?.status === 'success') {
-				const action = suspend ? 'Suspended' : 'Unsuspended';
-				toast.success(`User ${action}`, {
-					description: responseData.message || `The user has been ${action.toLowerCase()} successfully.`,
+				toast.success(`User KYC ${status}`, {
+					description: responseData.message || `The user KYC has been ${status.toLowerCase()} successfully.`,
 				});
 				return true;
 			}
 			return false;
 		} catch (err) {
-			toast.error('Suspend Operation Failed', {
+			toast.error('KYC update Failed', {
 				description: err instanceof Error ? err.message : 'An unexpected error occurred.',
 			});
 			return false;
 		}
 	};
 
-	const onPromoteUser = async (userId: string, makeAdmin: boolean) => {
-		try {
-			const { data: responseData, error } = await callApi<ApiResponse<null>>(`/user/make-admin`, {
-				userId,
-				makeAdmin,
-			});
-
-			if (error) throw new Error(error.message);
-
-			if (responseData?.status === 'success') {
-				const action = makeAdmin ? 'Promoted' : 'Demoted';
-				toast.success(`User ${action}`, {
-					description: responseData.message || `The user has been ${action.toLowerCase()} successfully.`,
-				});
-				return true;
-			}
-			return false;
-		} catch (err) {
-			toast.error('Promotion Operation Failed', {
-				description: err instanceof Error ? err.message : 'An unexpected error occurred.',
-			});
-			return false;
-		}
-	};
-
-	const columns: ColumnDef<User>[] = [
+	const columns: ColumnDef<Kyc>[] = [
 		{
 			id: 'select',
 			header: ({ table }) => (
@@ -160,82 +133,142 @@ export function DataTable() {
 				);
 			},
 			cell: ({ row }) => {
-				const firstName = row.original.firstName;
-				const lastName = row.original.lastName;
-				const photo = row.original.photo;
+				const name = row.original.name;
+
 				return (
 					<div className="flex items-center space-x-2">
 						<Avatar>
-							<AvatarImage src={photo} className="object-cover w-full h-full" />
+							<AvatarImage src={'/icons/Frame 7.svg'} className="object-cover w-full h-full" />
 							<AvatarFallback>
-								<Image src="/icons/Frame 7.svg" alt="Fallback Icon" width={100} height={100} />
+								{/* <Image src="/icons/Frame 7.svg" alt="Fallback Icon" width={100} height={100} /> */}
+								US
 							</AvatarFallback>
 						</Avatar>
-						<span className="lowercase ml-3">{`${firstName} ${lastName}`}</span>
+						<span className="lowercase ml-3">{`${name}`}</span>
 					</div>
 				);
 			},
-			accessorFn: (row) => `${row.firstName} ${row.lastName}`,
+			accessorFn: (row) => `${row.name}`,
 		},
 		{
-			accessorKey: 'email',
+			accessorKey: 'dob',
 			header: ({ column }) => {
 				return (
 					<Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-						Email
+						DOB
 						<ArrowUpDown />
 					</Button>
 				);
 			},
-			cell: ({ row }) => <div className="lowercase ml-3">{row.getValue('email')}</div>,
+			cell: ({ row }) => <div className="lowercase ml-3">{row.getValue('dob')}</div>,
 		},
 		{
-			accessorKey: 'phone',
+			accessorKey: 'nationality',
 			header: ({ column }) => {
 				return (
 					<Button variant="ghost" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-						Phone
+						Nationality
 						<ArrowUpDown />
 					</Button>
 				);
 			},
-			cell: ({ row }) => <div className="lowercase ml-3">{row.getValue('phone')}</div>,
+			cell: ({ row }) => <div className="lowercase ml-3">{row.getValue('nationality')}</div>,
 		},
 		{
-			accessorKey: 'country',
-			header: 'Country',
-			cell: ({ row }) => <div className="lowercase">{row.getValue('country')}</div>,
+			accessorKey: 'address',
+			header: 'Address',
+			cell: ({ row }) => <div className="lowercase">{row.getValue('address')}</div>,
 		},
 		{
-			accessorKey: 'role',
-			header: 'Role',
-			cell: ({ row }) => <div className="lowercase">{row.getValue('role')}</div>,
+			accessorKey: 'city',
+			header: 'City',
+			cell: ({ row }) => <div className="lowercase">{row.getValue('city')}</div>,
 		},
 		{
-			accessorKey: 'isKycVerified',
-			header: () => <div className="ml-5">KYC</div>,
-			cell: ({ row }) => {
-				const suspend = row.getValue('isKycVerified') as boolean;
-				return <div className="ml-5">{suspend?.toString()}</div>;
+			accessorKey: 'documentType',
+			header: 'Document Type',
+			cell: ({ row }) => <div className="lowercase">{row.getValue('documentType')}</div>,
+		},
+		{
+			id: 'document',
+			header: ({}) => {
+				return (
+					<Button variant="ghost">
+						Document
+						<ArrowUpDown />
+					</Button>
+				);
 			},
-		},
-		{
-			accessorKey: 'isSuspended',
-			header: () => <div className="ml-5">Suspended</div>,
 			cell: ({ row }) => {
-				const suspend = row.getValue('isSuspended') as boolean;
-				return <div className="ml-5">{suspend.toString()}</div>;
+				const document = row.original.document;
+
+				return (
+					<div className="flex items-center space-x-2">
+						<a href={document} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">
+							<span className="lowercase ml-3">{`${document}`}</span>
+						</a>
+					</div>
+				);
 			},
+			accessorFn: (row) => `${row.document}`,
 		},
 		{
-			accessorKey: 'dailyProfitChange',
-			header: 'Daily Profit',
-			cell: ({ row }) => <div className="lowercase">{row.getValue('dailyProfitChange')}</div>,
+			id: 'selfie',
+			header: ({}) => {
+				return (
+					<Button variant="ghost">
+						Selfie
+						<ArrowUpDown />
+					</Button>
+				);
+			},
+			cell: ({ row }) => {
+				const selfie = row.original.selfie;
+
+				return (
+					<div className="flex items-center space-x-2">
+						{/* <Avatar>
+							<AvatarImage src={'/icons/Frame 7.svg'} className="object-cover w-full h-full" />
+							<AvatarFallback>
+							
+								US
+							</AvatarFallback>
+						</Avatar> */}
+						<a href={selfie} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">
+							<span className="lowercase ml-3">{`${selfie}`}</span>
+						</a>
+					</div>
+				);
+			},
+			accessorFn: (row) => `${row.selfie}`,
 		},
 		{
-			accessorKey: 'totalProfit',
-			header: 'Total Profit',
-			cell: ({ row }) => <div className="lowercase">{row.getValue('totalProfit')}</div>,
+			id: 'proofOfAddress',
+			header: ({}) => {
+				return (
+					<Button variant="ghost">
+						Proof of Address
+						<ArrowUpDown />
+					</Button>
+				);
+			},
+			cell: ({ row }) => {
+				const proofOfAddress = row.original.proofOfAddress;
+
+				return (
+					<div className="flex items-center space-x-2">
+						<a href={proofOfAddress} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">
+							<span className="lowercase ml-3">{`${proofOfAddress}`}</span>
+						</a>
+					</div>
+				);
+			},
+			accessorFn: (row) => `${row.proofOfAddress}`,
+		},
+		{
+			accessorKey: 'status',
+			header: 'Status',
+			cell: ({ row }) => <div className="lowercase">{row.getValue('status')}</div>,
 		},
 		{
 			accessorKey: 'created_at',
@@ -255,7 +288,7 @@ export function DataTable() {
 			id: 'actions',
 			enableHiding: false,
 			cell: ({ row }) => {
-				const user = row.original;
+				const kyc = row.original;
 
 				return (
 					<DropdownMenu>
@@ -267,11 +300,11 @@ export function DataTable() {
 						</DropdownMenuTrigger>
 						<DropdownMenuContent align="end">
 							<DropdownMenuLabel>Actions</DropdownMenuLabel>
-							<DropdownMenuItem onClick={() => navigator.clipboard.writeText(user.id)} className="hover:cursor-pointer">
+							<DropdownMenuItem onClick={() => navigator.clipboard.writeText(kyc.userId)} className="hover:cursor-pointer">
 								Copy user ID
 							</DropdownMenuItem>
 							<DropdownMenuSeparator />
-							<DropdownMenuItem
+							{/* <DropdownMenuItem
 								className="hover:cursor-pointer"
 								onClick={async () => {
 									const success = await onPromoteUser(row.original.id, row.original.role !== 'admin');
@@ -279,16 +312,35 @@ export function DataTable() {
 								}}
 							>
 								{row.original.role === 'user' ? 'Promote User' : 'Demote User'}
-							</DropdownMenuItem>
-							<DropdownMenuItem
-								className="hover:cursor-pointer text-red-500"
-								onClick={async () => {
-									const success = await onSuspendUser(row.original.id, !row.original.isSuspended);
-									if (success) await queryClient.invalidateQueries({ queryKey: ['users'] });
-								}}
-							>
-								{row.original.isSuspended ? 'Unsuspend User' : 'Suspend User'}
-							</DropdownMenuItem>
+							</DropdownMenuItem> */}
+							{kyc.status !== 'approved' && (
+								<>
+									<DropdownMenuItem
+										className="hover:cursor-pointer"
+										onClick={async () => {
+											const success = await onUpdateUser(row.original.userId, 'approved');
+											if (success) {
+												await queryClient.invalidateQueries({ queryKey: ['kyc'] });
+												await queryClient.invalidateQueries({ queryKey: ['users'] });
+											}
+										}}
+									>
+										Approve
+									</DropdownMenuItem>
+									<DropdownMenuItem
+										className="hover:cursor-pointer"
+										onClick={async () => {
+											const success = await onUpdateUser(row.original.userId, 'rejected');
+											if (success) {
+												await queryClient.invalidateQueries({ queryKey: ['kyc'] });
+												await queryClient.invalidateQueries({ queryKey: ['users'] });
+											}
+										}}
+									>
+										Reject
+									</DropdownMenuItem>
+								</>
+							)}
 						</DropdownMenuContent>
 					</DropdownMenu>
 				);
@@ -297,7 +349,7 @@ export function DataTable() {
 	];
 
 	const table = useReactTable({
-		data: users ?? [],
+		data: kyc ?? [],
 		columns,
 		onSortingChange: setSorting,
 		onColumnFiltersChange: setColumnFilters,
@@ -318,7 +370,7 @@ export function DataTable() {
 	const debouncedFilter = React.useCallback(
 		(value: string) => {
 			const filterFunc = debounce((filterValue: string) => {
-				table.getColumn('email')?.setFilterValue(filterValue);
+				table.getColumn('name')?.setFilterValue(filterValue);
 			}, 2000);
 			filterFunc(value);
 		},
@@ -379,10 +431,10 @@ export function DataTable() {
 					<div className="w-full bg-white rounded-md px-6">
 						<div className="flex items-center py-4">
 							<Input
-								placeholder="Filter emails..."
+								placeholder="Filter names..."
 								// value={(table.getColumn('email')?.getFilterValue() as string) ?? ''}
 								// onChange={(event) => table.getColumn('email')?.setFilterValue(event.target.value)}
-								defaultValue={(table.getColumn('email')?.getFilterValue() as string) ?? ''}
+								defaultValue={(table.getColumn('name')?.getFilterValue() as string) ?? ''}
 								onChange={(event) => debouncedFilter(event.target.value)}
 								className="max-w-sm"
 							/>
@@ -454,26 +506,7 @@ export function DataTable() {
 								{table.getFilteredSelectedRowModel().rows.length} of {table.getFilteredRowModel().rows.length} row(s)
 								selected.
 							</div>
-							{/* <div className="space-x-2">
-					<Button
-						variant="outline"
-						size="sm"
-						className="hover:cursor-pointer"
-						onClick={() => table.previousPage()}
-						disabled={!table.getCanPreviousPage()}
-					>
-						Previous
-					</Button>
-					<Button
-						variant="outline"
-						size="sm"
-						className="hover:cursor-pointer"
-						onClick={() => table.nextPage()}
-						disabled={!table.getCanNextPage()}
-					>
-						Next
-					</Button>
-				</div> */}
+
 							<Pagination className="ml-auto mb-0">
 								<PaginationContent>
 									<PaginationItem>

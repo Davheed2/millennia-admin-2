@@ -4,7 +4,7 @@ console.log('Auth component mounted');
 import { useSession } from '@/store';
 import { usePathname, useRouter } from 'next/navigation';
 import type { ReactNode } from 'react';
-import { toast } from 'sonner';
+//import { toast } from 'sonner';
 import { Loader } from './common';
 
 type AuthProps = {
@@ -33,12 +33,13 @@ const Auth = ({ children, exclude = [] }: AuthProps) => {
 	// Check if the current route should be excluded from auth
 	if (exclude.includes(pathname)) return children;
 
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
 	const redirect = (route: string, message: string) => {
-		toast.error('Page access denied!', {
-			description: message,
-			id: 'access-denied',
-			duration: 1000,
-		});
+		// toast.error('Page access denied!', {
+		// 	description: message,
+		// 	id: 'access-denied',
+		// 	duration: 1000,
+		// });
 
 		setTimeout(() => {
 			router.replace(route);

@@ -3,8 +3,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { FormErrorMessage, VerifiedIcon } from '../common';
+import { FormErrorMessage } from '../common';
 import { CameraIcon } from '../common';
 import { useSession } from '@/store';
 import Image from 'next/image';
@@ -15,7 +14,6 @@ import { ApiResponse } from '@/interfaces';
 import { SessionData } from '@/interfaces/ApiResponses';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 
 export default function UpdateProfile() {
 	const {
@@ -29,13 +27,7 @@ export default function UpdateProfile() {
 		email: user ? user[0].email : '',
 		firstName: user ? user[0].firstName : '',
 		lastName: user ? user[0].lastName : '',
-		username: user ? user[0].username : '',
 		photo: undefined,
-		bio: user ? user[0].bio : '',
-		careerGoals: user ? user[0].careerGoals : '',
-		opportunities: user ? user[0].opportunities : '',
-		strengths: user ? user[0].strengths : '',
-		assessment: user ? user[0].assessment : '',
 	};
 
 	const {
@@ -59,29 +51,19 @@ export default function UpdateProfile() {
 				email: user ? user[0].email : '',
 				firstName: user ? user[0].firstName : '',
 				lastName: user ? user[0].lastName : '',
-				username: user ? user[0].username : '',
 				photo: undefined,
-				bio: user ? user[0].bio : '',
-				careerGoals: user ? user[0].careerGoals : '',
-				opportunities: user ? user[0].opportunities : '',
-				strengths: user ? user[0].strengths : '',
 			});
 		}
 	}, [user, reset]);
 
 	const formValues = watch();
 	const hasChanges = () => {
-		const { email, firstName, lastName, username, photo, bio, careerGoals, opportunities, strengths } = formValues;
+		const { email, firstName, lastName, photo } = formValues;
 
 		const textFieldsChanged =
 			(email || '') !== (initialValues.email || '') ||
 			(firstName || '') !== (initialValues.firstName || '') ||
-			(lastName || '') !== (initialValues.lastName || '') ||
-			(username || '') !== (initialValues.username || '') ||
-			(bio || '') !== (initialValues.bio || '') ||
-			(careerGoals || '') !== (initialValues.careerGoals || '') ||
-			(opportunities || '') !== (initialValues.opportunities || '') ||
-			(strengths || '') !== (initialValues.strengths || '');
+			(lastName || '') !== (initialValues.lastName || '');
 		const photoChanged = photo instanceof File;
 
 		return textFieldsChanged || photoChanged;
@@ -187,18 +169,6 @@ export default function UpdateProfile() {
 			<form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
 				<div className="relative flex justify-center mt-4">
 					<label htmlFor="profileUpload" className="relative cursor-pointer">
-						{user && user[0]?.accountType === 'organization' && (
-							<Tooltip>
-								<TooltipTrigger asChild>
-									<span className="absolute -top-0 right-1 bg-blue-400 text-white text-xs w-4 h-4 flex items-center justify-center rounded-full">
-										<VerifiedIcon className="h-6 w-6" />
-									</span>
-								</TooltipTrigger>
-								<TooltipContent side="top" className="">
-									<p>{user && user[0].organizationName}</p>
-								</TooltipContent>
-							</Tooltip>
-						)}
 						<Avatar className="w-24 h-24 border">
 							<AvatarImage src={profileImage || ''} className="object-cover w-full h-full" />
 							<AvatarFallback>
@@ -257,24 +227,7 @@ export default function UpdateProfile() {
 					</div>
 				</div>
 
-				<div className="grid grid-cols-2 gap-4">
-					<div>
-						<label htmlFor="username" className="text-sm font-medium text-gray-700">
-							User Name
-						</label>
-						<Input
-							{...register('username')}
-							type="text"
-							id="username"
-							aria-label="User Name"
-							placeholder="User Name"
-							className={`min-h-[45px] text-sm border-gray-300 focus:border-blue-500 focus:ring-blue-500 placeholder:text-sm ${
-								errors.username && 'border-red-500 ring-2 ring-red-500'
-							}`}
-						/>
-						{errors.username && <FormErrorMessage error={errors.username} errorMsg={errors.username.message} />}
-					</div>
-
+				<div className="grid grid-cols-1 gap-4">
 					<div>
 						<label htmlFor="email" className="text-sm font-medium text-gray-700">
 							Email
@@ -293,107 +246,11 @@ export default function UpdateProfile() {
 					</div>
 				</div>
 
-				{user && user[0]?.accountType === 'organization' && (
-					<div className="grid grid-cols-1 gap-4">
-						<div>
-							<label htmlFor="name" className="text-sm font-medium text-gray-700">
-								Bio
-							</label>
-							<Textarea
-								{...register('bio')}
-								id="bio"
-								aria-label="Bio"
-								placeholder="Bio"
-								className={`min-h-[70px] px-3 py-3 border border-gray-300 focus:border-blue-500 focus:ring-blue-500 placeholder:text-sm resize-none overflow-hidden ${
-									errors.bio ? 'border-red-500 ring-2 ring-red-500' : ''
-								}`}
-							/>
-							{errors.bio && <FormErrorMessage error={errors.bio} errorMsg={errors.bio.message} />}
-						</div>
-					</div>
-				)}
-
-				<div className="grid grid-cols-1 gap-4">
-					<div>
-						<label htmlFor="name" className="text-sm font-medium text-gray-700">
-							Career Goals
-						</label>
-						<Textarea
-							{...register('careerGoals')}
-							id="careerGoals"
-							aria-label="Your career Goals"
-							placeholder="Your career Goals"
-							className={`min-h-[70px] px-3 py-3 border border-gray-300 focus:border-blue-500 focus:ring-blue-500 placeholder:text-sm resize-none overflow-hidden ${
-								errors.careerGoals ? 'border-red-500 ring-2 ring-red-500' : ''
-							}`}
-						/>
-						{errors.careerGoals && (
-							<FormErrorMessage error={errors.careerGoals} errorMsg={errors.careerGoals.message} />
-						)}
-					</div>
-				</div>
-
-				<div className="grid grid-cols-1 gap-4">
-					<div>
-						<label htmlFor="name" className="text-sm font-medium text-gray-700">
-							Opportunities
-						</label>
-						<Textarea
-							{...register('opportunities')}
-							id="opportunities"
-							aria-label="Opportunities you would want to work on"
-							placeholder="Opportunities you would want to work on"
-							className={`min-h-[70px] px-3 py-3 border border-gray-300 focus:border-blue-500 focus:ring-blue-500 placeholder:text-sm resize-none overflow-hidden ${
-								errors.opportunities ? 'border-red-500 ring-2 ring-red-500' : ''
-							}`}
-						/>
-						{errors.opportunities && (
-							<FormErrorMessage error={errors.opportunities} errorMsg={errors.opportunities.message} />
-						)}
-					</div>
-				</div>
-
-				<div className="grid grid-cols-1 gap-4">
-					<div>
-						<label htmlFor="name" className="text-sm font-medium text-gray-700">
-							Strengths
-						</label>
-						<Textarea
-							{...register('strengths')}
-							id="strengths"
-							aria-label="strengths"
-							placeholder="Your strengths"
-							className={`min-h-[70px] px-3 py-3 border border-gray-300 focus:border-blue-500 focus:ring-blue-500 placeholder:text-sm resize-none overflow-hidden ${
-								errors.strengths ? 'border-red-500 ring-2 ring-red-500' : ''
-							}`}
-						/>
-						{errors.strengths && <FormErrorMessage error={errors.strengths} errorMsg={errors.strengths.message} />}
-					</div>
-				</div>
-
-				<div className="grid grid-cols-1 gap-4">
-					<div>
-						<label htmlFor="name" className="text-sm font-medium text-gray-700">
-							Assessment link
-						</label>
-						<Input
-							autoFocus
-							id="assessment"
-							aria-label="assessment"
-							placeholder="Your Assessment link"
-							disabled
-							className={`min-h-[45px] px-3 py-3 border border-gray-300 focus:border-blue-500 focus:ring-blue-500 placeholder:text-sm resize-none overflow-hidden ${
-								errors.strengths ? 'border-red-500 ring-2 ring-red-500' : ''
-							}`}
-						/>
-					</div>
-				</div>
-
 				<Button
 					type="submit"
 					disabled={isSubmitting || isLoading || !hasChanges()}
 					variant="default"
-					className="w-full bg-[#509999] hover:bg-[#6fb7b7] hover:cursor-pointer text-white font-semibold py-5 rounded"
+					className="w-full bg-[#1d4ed8] hover:bg-[#1e40af] hover:cursor-pointer text-white font-semibold py-5 rounded"
 				>
 					{isSubmitting || isLoading ? 'Saving...' : 'Save Changes'}
 				</Button>

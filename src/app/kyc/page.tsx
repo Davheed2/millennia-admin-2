@@ -1,22 +1,22 @@
+import { KycTable } from '@/components/dashboard/Kyc';
 import DashboardLayout from '../dashboard/layout';
 import { generatePageMetadata } from '@/components/common/PageMetaData';
-import PowerSkill from '@/components/dashboard/PowerSkills';
 import { Metadata } from 'next';
 
 export const generateMetadata = (): Metadata => {
 	return generatePageMetadata({
-		title: 'Power Skills - 100 Minds',
-		content: 'Explore and develop your power skills with 100 Minds',
-		url: 'https://admin-mmyv.onrender.com/power-skills',
+		title: 'KYC - Millennia Trades',
+		content: 'View and manage users KYC in Millennia Trades Dashboard',
+		url: 'https://admin.millenniatrades.com/kyc',
 	});
 };
 
-export default function PowerSkills() {
+export default function Users() {
 	return (
-		<DashboardLayout heading="Power Skills">
+		<DashboardLayout heading="KYC">
 			<div className="mb-5">
 				<div className="flex items-center justify-center">
-					<PowerSkill />
+					<KycTable />
 				</div>
 			</div>
 		</DashboardLayout>
