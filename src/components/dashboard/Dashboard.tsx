@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Users, Drama, Zap, BookOpen, Book } from 'lucide-react';
+import { Users, TrendingUp, ShieldCheck, ArrowDownCircle, ArrowUpCircle } from 'lucide-react';
 import { toast } from 'sonner';
 import { callApi } from '@/lib';
 import { Card, CardContent } from '../ui/card';
@@ -20,11 +20,10 @@ interface StatCardProps {
 
 interface Statistics {
 	totalUsers: number;
-	totalRolePlay: number;
-	totalTeams: number;
-	totalPowerSkill: number;
-	totalLearningJourney: number;
-	totalCourses: number;
+	totalInvestments: number;
+	totalDeposits: number;
+	totalWithdrawals: number;
+	totalKyc: number;
 }
 
 function StatCard({ title, value, icon, selected, onClick }: StatCardProps) {
@@ -35,12 +34,12 @@ function StatCard({ title, value, icon, selected, onClick }: StatCardProps) {
 			className="p-6 h-[160px] transition-all duration-300 cursor-pointer outline-none"
 			style={
 				selected
-					? { background: 'linear-gradient(to right, #407878, #60B8B8)', color: 'white' }
+					? { background: 'linear-gradient(to right,rgb(42, 42, 168), #60B8B8)', color: 'white' }
 					: { background: 'white' }
 			}
 			onMouseEnter={(e) =>
 				!selected &&
-				(e.currentTarget.style.background = 'linear-gradient(to right, #407878, #60B8B8)') &&
+				(e.currentTarget.style.background = 'linear-gradient(to right, rgb(42, 42, 168), #60B8B8)') &&
 				(e.currentTarget.style.color = 'white')
 			}
 			onMouseLeave={(e) =>
@@ -77,14 +76,14 @@ export default function DashboardStats() {
 	} = useQuery<Statistics[], Error>({
 		queryKey: ['stats'],
 		queryFn: async () => {
-			const { data: responseData, error } = await callApi<ApiResponse<Statistics[]>>('/statistics/stats');
+			const { data: responseData, error } = await callApi<ApiResponse<Statistics[]>>('/user/statistics');
 			if (error) {
 				throw new Error(error.message || 'Something went wrong while fetching stats.');
 			}
 			if (!responseData?.data) {
 				throw new Error('Failed to Fetch Stats');
 			}
-			toast.success('Stats Fetched', { description: 'Successfully fetched statistics.' });
+			// toast.success('Stats Fetched', { description: 'Successfully fetched statistics.' });
 			return responseData.data;
 		},
 	});
@@ -126,34 +125,42 @@ export default function DashboardStats() {
 
 	const statItems = [
 		{
+			title: 'Successful Deposits',
+			value:
+				stats && typeof stats[0].totalDeposits === 'number'
+					? `$${stats[0].totalDeposits.toLocaleString(undefined, {
+							minimumFractionDigits: 2,
+							maximumFractionDigits: 2,
+						})}`
+					: '$0.00',
+			icon: <ArrowDownCircle className="h-5 w-5 text-[#1d4ed8]" />,
+		},
+		{
+			title: 'Successful Withdrawals',
+			value:
+				stats && typeof stats[0].totalWithdrawals === 'number'
+					? `$${stats[0].totalWithdrawals.toLocaleString(undefined, {
+							minimumFractionDigits: 2,
+							maximumFractionDigits: 2,
+						})}`
+					: '$0.00',
+			icon: <ArrowUpCircle className="h-5 w-5 text-[#1d4ed8]" />,
+		},
+		{
 			title: 'Total Users',
 			value: stats ? stats[0].totalUsers : 0,
 			icon: <Users className="h-5 w-5 text-[#1d4ed8]" />,
 		},
 		{
-			title: 'Total Role Play',
-			value: stats ? stats[0].totalRolePlay : 0,
-			icon: <Drama className="h-5 w-5 text-[#1d4ed8]" />,
+			title: 'Total Investments',
+			value: stats ? stats[0].totalInvestments : 0,
+			icon: <TrendingUp className="h-5 w-5 text-[#1d4ed8]" />,
 		},
+
 		{
-			title: 'Total Teams',
-			value: stats ? stats[0].totalTeams : 0,
-			icon: <Users className="h-5 w-5 text-[#1d4ed8]" />,
-		},
-		{
-			title: 'Total Power Skill',
-			value: stats ? stats[0].totalPowerSkill : 0,
-			icon: <Zap className="h-5 w-5 text-[#1d4ed8]" />,
-		},
-		{
-			title: 'Total Learning Journey',
-			value: stats ? stats[0].totalLearningJourney : 0,
-			icon: <BookOpen className="h-5 w-5 text-[#1d4ed8]" />,
-		},
-		{
-			title: 'Total Courses',
-			value: stats ? stats[0].totalCourses : 0,
-			icon: <Book className="h-5 w-5 text-[#1d4ed8]" />,
+			title: 'Total KYC',
+			value: stats ? stats[0].totalKyc : 0,
+			icon: <ShieldCheck className="h-5 w-5 text-[#1d4ed8]" />,
 		},
 	];
 
