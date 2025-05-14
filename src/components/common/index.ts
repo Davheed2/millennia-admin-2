@@ -32,4 +32,5 @@ export {
 	GroupIcon,
 	DepositIcon,
 	WithdrawalIcon,
+	MessageIcon
 } from './svg';

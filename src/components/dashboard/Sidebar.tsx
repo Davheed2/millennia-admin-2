@@ -13,6 +13,7 @@ import {
 	GroupIcon,
 	DepositIcon,
 	WithdrawalIcon,
+	MessageIcon
 } from '../common';
 import Image from 'next/image';
 
@@ -20,8 +21,9 @@ const menuItems = [
 	{ name: 'Dashboard', icon: DashboardIcon, path: '/dashboard' },
 	{ name: 'Users', icon: GroupIcon, path: '/users' },
 	{ name: 'Kyc', icon: UsersIcon, path: '/kyc' },
-	{ name: 'deposits', icon: DepositIcon, path: '/deposits' },
-	{ name: 'withdrawals', icon: WithdrawalIcon, path: '/withdrawals' },
+	{ name: 'Deposits', icon: DepositIcon, path: '/deposits' },
+	{ name: 'Withdrawals', icon: WithdrawalIcon, path: '/withdrawals' },
+	{ name: 'Messages', icon: MessageIcon, path: '/messages' },
 	{ name: 'Settings', icon: SettingsIcon, path: '/settings' },
 ];
 
