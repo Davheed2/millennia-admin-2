@@ -7,7 +7,7 @@ export const generateMetadata = (): Metadata => {
 	return generatePageMetadata({
 		title: 'KYC - Millennia Trades',
 		content: 'View and manage users KYC in Millennia Trades Dashboard',
-		url: 'https://admin.millenniatrades.com/kyc',
+		url: 'https://admin.milleniatrades.com/kyc',
 	});
 };
 

@@ -7,7 +7,7 @@ export const generateMetadata = (): Metadata => {
 	return generatePageMetadata({
 		title: 'Users - Millennia Trades',
 		content: 'View and manage user accounts in Millennia Trades Dashboard',
-		url: 'https://admin.millenniatrades.com/users',
+		url: 'https://admin.milleniatrades.com/users',
 	});
 };
 

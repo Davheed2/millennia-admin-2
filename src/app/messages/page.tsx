@@ -7,7 +7,7 @@ export const generateMetadata = (): Metadata => {
 	return generatePageMetadata({
 		title: 'Messages - Millennia Trades',
 		content: 'View and respond to user messages as a customer care in Millennia Trades Dashboard',
-		url: 'https://admin.millenniatrades.com/messages',
+		url: 'https://admin.milleniatrades.com/messages',
 	});
 };
 

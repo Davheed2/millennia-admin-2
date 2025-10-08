@@ -6,7 +6,7 @@ export const generateMetadata = (): Metadata => {
 	return generatePageMetadata({
 		title: 'Sign in - Millennia Trades',
 		content: 'Sign in to access Millennia Trades admin dashboard',
-		url: 'https://admin.millenniatrades.com',
+		url: 'https://admin.milleniatrades.com',
 	});
 };
 

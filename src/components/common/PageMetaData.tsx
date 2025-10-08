@@ -19,10 +19,10 @@ export function generatePageMetadata({ title, content, image, url }: MetaDataPro
 			locale: 'en_US',
 			title: `${title}`,
 			description: content,
-			url: url || 'https://admin.millenniatrades.com',
+			url: url || 'https://admin.milleniatrades.com',
 			images: [
 				{
-					url: 'https://www.admin.millenniatrades.com/opengraph-image.png',
+					url: 'https://www.admin.milleniatrades.com/opengraph-image.png',
 					width: 1200,
 					height: 630,
 					alt: 'Millennia Trades Open Graph Image',
@@ -38,6 +38,6 @@ export function generatePageMetadata({ title, content, image, url }: MetaDataPro
 		other: {
 			'og:locale': 'en_US',
 		},
-		metadataBase: new URL('https://www.admin.millenniatrades.com'),
+		metadataBase: new URL('https://www.admin.milleniatrades.com'),
 	};
 }

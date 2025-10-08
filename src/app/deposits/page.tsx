@@ -7,7 +7,7 @@ export const generateMetadata = (): Metadata => {
 	return generatePageMetadata({
 		title: 'Wallet Deposits - Millennia Trades',
 		content: 'View and manage users wallet deposits in Millennia Trades Dashboard',
-		url: 'https://admin.millenniatrades.com/deposits',
+		url: 'https://admin.milleniatrades.com/deposits',
 	});
 };
 
