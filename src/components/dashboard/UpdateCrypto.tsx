@@ -36,14 +36,14 @@ export default function UpdateCrypto() {
 		setLoading(true);
 		try {
 			const { data: responseData, error } = await callApi<ApiResponse>('/crypto', { crypto, address });
-			
+
 			if (error) {
 				throw new Error(error.message || 'Failed to update crypto address');
 			}
 
 			toast.success(responseData?.message || 'Global Crypto Address updated successfully');
-		} catch (error: any) {
-			toast.error(error.message || 'An error occurred while saving.');
+		} catch (error) {
+			toast.error(String(error) || 'An error occurred while saving.');
 		} finally {
 			setLoading(false);
 		}
@@ -69,10 +69,7 @@ export default function UpdateCrypto() {
 					className="font-mono text-sm"
 				/>
 			</div>
-			<Button
-				type="submit"
-				disabled={loading}
-			>
+			<Button type="submit" disabled={loading}>
 				{loading ? 'Saving...' : 'Save Crypto Address'}
 			</Button>
 		</form>
