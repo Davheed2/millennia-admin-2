@@ -4,9 +4,9 @@ import { Metadata } from 'next';
 
 export const generateMetadata = (): Metadata => {
 	return generatePageMetadata({
-		title: 'Reset Password - 100 Minds',
+		title: 'Reset Password - Alpsector',
 		content: 'Reset your password! Follow the instructions on this page to set a new password.',
-		url: 'https://admin-mmyv.onrender.com/reset-password',
+		url: 'https://admin.alpsector.com/reset-password',
 	});
 };
 

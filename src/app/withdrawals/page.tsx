@@ -5,9 +5,9 @@ import { Metadata } from 'next';
 
 export const generateMetadata = (): Metadata => {
 	return generatePageMetadata({
-		title: 'Wallet Withdrawals - Millennia Trades',
-		content: 'View and manage users wallet deposits in Millennia Trades Dashboard',
-		url: 'https://admin.milleniatrades.com/withdrawals',
+		title: 'Wallet Withdrawals - Alpsector',
+		content: 'View and manage users wallet deposits in Alpsector Dashboard',
+		url: 'https://admin.alpsector.com/withdrawals',
 	});
 };
 

@@ -5,9 +5,9 @@ import { Metadata } from 'next';
 
 export const generateMetadata = (): Metadata => {
 	return generatePageMetadata({
-		title: 'KYC - Millennia Trades',
-		content: 'View and manage users KYC in Millennia Trades Dashboard',
-		url: 'https://admin.milleniatrades.com/kyc',
+		title: 'KYC - Alpsector',
+		content: 'View and manage users KYC in Alpsector Dashboard',
+		url: 'https://admin.alpsector.com/kyc',
 	});
 };
 

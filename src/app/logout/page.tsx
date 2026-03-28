@@ -4,9 +4,9 @@ import { Metadata } from 'next';
 
 export const generateMetadata = (): Metadata => {
 	return generatePageMetadata({
-		title: 'Logging Out - 100 Minds',
+		title: 'Logging Out - Alpsector',
 		content: 'You are being logged out...',
-		url: 'https://admin-mmyv.onrender.com/logout',
+		url: 'https://admin.alpsector.com/logout',
 	});
 };
 

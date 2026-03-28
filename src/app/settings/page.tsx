@@ -5,9 +5,9 @@ import { Metadata } from 'next';
 
 export const generateMetadata = (): Metadata => {
 	return generatePageMetadata({
-		title: 'Settings - 100 Minds',
-		content: 'Customize your preferences and account settings in 100 Minds Dashboard',
-		url: 'https://admin-mmyv.onrender.com/settings',
+		title: 'Settings - Alpsector',
+		content: 'Customize your preferences and account settings in Alpsector Dashboard',
+		url: 'https://admin.alpsector.com/settings',
 	});
 };
 

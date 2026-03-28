@@ -4,9 +4,9 @@ import { generatePageMetadata } from '@/components/common/PageMetaData';
 
 export const generateMetadata = (): Metadata => {
 	return generatePageMetadata({
-		title: 'Sign in - Millennia Trades',
-		content: 'Sign in to access Millennia Trades admin dashboard',
-		url: 'https://admin.milleniatrades.com',
+		title: 'Sign in - Alpsector',
+		content: 'Sign in to access Alpsector admin dashboard',
+		url: 'https://admin.alpsector.com',
 	});
 };
 

@@ -20,7 +20,7 @@ class SocketService {
 		}
 
 		//console.log(process.env.NEXT_PUBLIC_SOCKET_URL, 'NEXT_PUBLIC_SOCKET_URL');
-		this.socket = io(process.env.NEXT_PUBLIC_SOCKET_URL || 'https://www.api.milleniatrades.com', {
+		this.socket = io(process.env.NEXT_PUBLIC_SOCKET_URL || 'https://www.api.alpsector.com', {
 			withCredentials: true,
 		});
 

@@ -4,14 +4,15 @@ import { Collapsible, CollapsibleTrigger, CollapsibleContent } from '@/component
 import ForgotPasswordPage from './ForgotPassword';
 import UpdateProfile from './UpdateProfile';
 import UpdatePhone from './UpdatePhone';
+import UpdateCrypto from './UpdateCrypto';
 import { useState } from 'react';
 
 export default function Settings() {
-	const [activeSection, setActiveSection] = useState<'updateProfile' | 'updatePhone' | 'ForgotPassword' | null>(
+	const [activeSection, setActiveSection] = useState<'updateProfile' | 'updatePhone' | 'ForgotPassword' | 'updateCrypto' | null>(
 		'updateProfile'
 	);
 
-	const handleOpen = (section: 'updateProfile' | 'updatePhone' | 'ForgotPassword') => {
+	const handleOpen = (section: 'updateProfile' | 'updatePhone' | 'ForgotPassword' | 'updateCrypto') => {
 		setActiveSection((prev) => (prev === section ? null : section));
 	};
 
@@ -37,11 +38,20 @@ export default function Settings() {
 				</Collapsible>
 
 				<Collapsible open={activeSection === 'ForgotPassword'} onOpenChange={() => handleOpen('ForgotPassword')}>
-					<CollapsibleTrigger className="w-full bg-[#F0F0F0] px-4 py-2 rounded-lg text-left hover:cursor-pointer mb-10">
+					<CollapsibleTrigger className="w-full bg-[#F0F0F0] px-4 py-2 rounded-lg text-left hover:cursor-pointer mb-2">
 						Forgot Password
 					</CollapsibleTrigger>
-					<CollapsibleContent className="w-full max-h-96 overflow-y-auto ">
+					<CollapsibleContent className="w-full max-h-96 overflow-y-auto mb-2">
 						<ForgotPasswordPage />
+					</CollapsibleContent>
+				</Collapsible>
+
+				<Collapsible open={activeSection === 'updateCrypto'} onOpenChange={() => handleOpen('updateCrypto')}>
+					<CollapsibleTrigger className="w-full bg-[#F0F0F0] px-4 py-2 rounded-lg text-left hover:cursor-pointer mb-10">
+						Global Crypto Wallet Settings
+					</CollapsibleTrigger>
+					<CollapsibleContent className="w-full">
+						<UpdateCrypto />
 					</CollapsibleContent>
 				</Collapsible>
 			</div>

@@ -13,7 +13,14 @@ import {
 	getSortedRowModel,
 	useReactTable,
 } from '@tanstack/react-table';
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from 'lucide-react';
+import { ArrowUpDown, ChevronDown, MoreHorizontal, Eye } from 'lucide-react';
+import {
+	Dialog,
+	DialogContent,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
@@ -172,19 +179,48 @@ export function DepositTable() {
 			cell: ({ row }) => {
 				const paymentProof = row.original.paymentProof;
 
-				if (paymentProof === null) {
-					return <div className="flex items-center justify-center">-</div>;
+				if (!paymentProof) {
+					return <div className="text-muted-foreground italic text-xs">No Proof</div>;
 				}
 
 				return (
-					<div className="flex items-center space-x-2">
-						<a href={paymentProof} target="_blank" rel="noopener noreferrer" className="text-blue-600 underline">
-							<span className="lowercase ml-3">{`${paymentProof}`}</span>
-						</a>
-					</div>
+					<Dialog>
+						<DialogTrigger asChild>
+							<Button variant="outline" size="sm" className="h-8 gap-2 hover:bg-emerald-50 text-emerald-600 border-emerald-200">
+								<Eye className="w-4 h-4" />
+								View Proof
+							</Button>
+						</DialogTrigger>
+						<DialogContent className="max-w-3xl p-0 overflow-hidden bg-white border-none rounded-2xl shadow-2xl">
+							<DialogHeader className="p-4 border-b bg-gray-50/50">
+								<DialogTitle className="text-xl font-bold flex items-center gap-2">
+									<Eye className="w-5 h-5 text-emerald-500" />
+									Payment Verification Proof
+								</DialogTitle>
+							</DialogHeader>
+							<div className="p-4 bg-gray-100/30 flex items-center justify-center min-h-[300px] max-h-[70vh] overflow-y-auto custom-scrollbar">
+								{paymentProof.toLowerCase().endsWith('.pdf') ? (
+									<iframe src={paymentProof} className="w-full h-[60vh] rounded-lg border shadow-sm" />
+								) : (
+									<img
+										src={paymentProof}
+										alt="Payment Proof"
+										className="max-w-full max-h-[60vh] object-contain rounded-lg shadow-lg border border-gray-200"
+									/>
+								)}
+							</div>
+							<div className="p-4 bg-gray-50 border-t flex justify-end">
+								<Button asChild variant="ghost" size="sm">
+									<a href={paymentProof} target="_blank" rel="noopener noreferrer">
+										Open in New Tab
+									</a>
+								</Button>
+							</div>
+						</DialogContent>
+					</Dialog>
 				);
 			},
-			accessorFn: (row) => `${row.paymentProof}`,
+			accessorFn: (row) => row.paymentProof || '',
 		},
 		{
 			accessorKey: 'crypto',

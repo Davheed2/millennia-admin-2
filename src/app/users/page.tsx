@@ -5,9 +5,9 @@ import { Metadata } from 'next';
 
 export const generateMetadata = (): Metadata => {
 	return generatePageMetadata({
-		title: 'Users - Millennia Trades',
-		content: 'View and manage user accounts in Millennia Trades Dashboard',
-		url: 'https://admin.milleniatrades.com/users',
+		title: 'Users - Alpsector',
+		content: 'View and manage user accounts in Alpsector Dashboard',
+		url: 'https://admin.alpsector.com/users',
 	});
 };
 

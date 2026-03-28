@@ -51,6 +51,11 @@ export type Transaction = {
 	updated_at?: Date;
 };
 
+export type SysCrypto = {
+	crypto: string;
+	address: string;
+};
+
 export type SessionData = User[];
 export type KycData = Kyc[];
 export type TransactionData = Transaction[];

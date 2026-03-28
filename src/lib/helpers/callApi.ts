@@ -7,11 +7,11 @@ import { isObject } from '../type-helpers/typeOf';
 import { assertENV } from '../type-helpers/assert';
 
 const BACKEND_API = assertENV(process.env.NEXT_PUBLIC_BACKEND_URL, {
-	message: 'Please add the NEXT_PUBLIC_BACKEND_API variable to your .env file',
+	message: 'Please add the NEXT_PUBLIC_BACKEND_URL variable to your .env file',
 });
 
 const api: AxiosInstance = axios.create({
-	baseURL: BACKEND_API,
+	baseURL: `${BACKEND_API}/api/v1`,
 	timeout: 60000, // Set timeout to 60 seconds
 	withCredentials: true, // enable cookies to be sent with the request for authentication automatically
 });

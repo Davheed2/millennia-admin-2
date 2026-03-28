@@ -13,7 +13,7 @@ import {
 	GroupIcon,
 	DepositIcon,
 	WithdrawalIcon,
-	MessageIcon
+	MessageIcon,
 } from '../common';
 import Image from 'next/image';
 
@@ -39,13 +39,13 @@ export default function Sidebar() {
 				</div> */}
 				<div className="flex items-center gap-2 mb-11 mdd:mb-8 mt-7">
 					<Image
-						src="/millennnia.png"
-						alt="Millennia Trades Logo"
+						src="/alpsector-logo.png"
+						alt="Alpsector Logo"
 						width={32}
 						height={32}
 						className="rounded-full object-cover"
 					/>
-					<span className="text-lg font-bold">Millennia Trades</span>
+					<span className="text-lg font-bold">Alpsector</span>
 				</div>
 
 				<nav className="flex flex-col gap-4 flex-grow">
@@ -128,7 +128,7 @@ export function MobileSidebar({
 							height={32}
 							className="rounded-full object-cover"
 						/>
-						<span className="text-lg font-bold">Millennia Trades</span>
+						<span className="text-lg font-bold">Alpsector</span>
 					</div>
 					<button
 						className="cursor-pointer bg-[#F3F3F3] rounded-xl p-2 md:hidden mt-5"
